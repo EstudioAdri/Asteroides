@@ -30,8 +30,8 @@ public class SpawnController : MonoBehaviour
         Instantiate(enemyGameObject);
     }
 
-    void SpawnAsteroid()
+    public void SpawnAsteroid(Vector3 position)
     {
-
+        Instantiate(enemyGameObject).transform.position = position;
     }
 }
