@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] EnemyController enempyGameObject;
+    [SerializeField] EnemyController enemyGameObject;
     [SerializeField] PlayerController playerGameObject;
 
     [Header("Asteroids")]
@@ -23,8 +23,8 @@ public class SpawnController : MonoBehaviour
         // Check number of asteroids in asteroidList
     }
 
-    void SpawnAsteroid()
+    public void SpawnAsteroid(Vector3 position)
     {
-
+        Instantiate(enemyGameObject).transform.position = position;
     }
 }
