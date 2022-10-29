@@ -14,7 +14,10 @@ public class SpawnController : MonoBehaviour
 
     private void Start()
     {
+        // Initializes the player object
         Instantiate(playerGameObject);
+
+
         // use initialSpawnOfAsteroids
     }
 
