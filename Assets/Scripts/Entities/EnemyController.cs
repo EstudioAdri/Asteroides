@@ -14,9 +14,13 @@ public class EnemyController : MonoBehaviour
         
     }
 
-    void OnDamage(int ammount)
+    void OnDamage(uint ammount)
     {
-        
+        health -= ammount;
+        if (health == 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void OnDestroy()
