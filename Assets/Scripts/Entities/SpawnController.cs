@@ -8,19 +8,26 @@ public class SpawnController : MonoBehaviour
     [SerializeField] EnemyController enemyGameObject;
     [SerializeField] PlayerController playerGameObject;
 
-    [Header("Asteroids")]
-    [SerializeField] int initialSpawnOfAsteroids;
-    [SerializeField] List<EnemyController> asteroidList;
-
     private void Start()
     {
+        // Initializes the player object
         Instantiate(playerGameObject);
+
         // use initialSpawnOfAsteroids
     }
 
     private void Update()
     {
         // Check number of asteroids in asteroidList
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            AddEnemy();
+        }
+    }
+
+    public void AddEnemy()
+    {
+        Instantiate(enemyGameObject);
     }
 
     public void SpawnAsteroid(Vector3 position)
