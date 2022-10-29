@@ -5,18 +5,13 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] EnemyController enempyGameObject;
+    [SerializeField] EnemyController enemyGameObject;
     [SerializeField] PlayerController playerGameObject;
-
-    [Header("Asteroids")]
-    [SerializeField] int initialSpawnOfAsteroids;
-    [SerializeField] List<EnemyController> asteroidList;
 
     private void Start()
     {
         // Initializes the player object
         Instantiate(playerGameObject);
-
 
         // use initialSpawnOfAsteroids
     }
@@ -24,6 +19,15 @@ public class SpawnController : MonoBehaviour
     private void Update()
     {
         // Check number of asteroids in asteroidList
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            AddEnemy();
+        }
+    }
+
+    public void AddEnemy()
+    {
+        Instantiate(enemyGameObject);
     }
 
     void SpawnAsteroid()

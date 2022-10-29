@@ -9,6 +9,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField] uint size;
     [SerializeField] float speed;
 
+    [Header("Enemy Count")]
+    [SerializeField] uint enemyCount;
+
+    private void Start()
+    {
+        EnemyManager.Register(gameObject.GetInstanceID(), this);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         
@@ -25,6 +33,6 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
-        // Spawn asteroid
+        EnemyManager.Remove(gameObject.GetInstanceID());
     }
 }
