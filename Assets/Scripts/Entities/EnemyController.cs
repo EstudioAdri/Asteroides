@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        
+
     }
 
     void OnDamage(uint ammount)
@@ -30,9 +30,18 @@ public class EnemyController : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
     void OnDestroy()
     {
+
+        
+
+        if (health == 0)
+        {
+            var spawnController = FindObjectOfType<SpawnController>();
+            spawnController.SpawnAsteroid(transform.position);
+            spawnController.SpawnAsteroid(transform.position);
+        }
         EnemyManager.Remove(gameObject.GetInstanceID());
+
     }
 }
