@@ -18,11 +18,19 @@ public class SpawnController : MonoBehaviour
 
     private void Update()
     {
-        // Check number of asteroids in asteroidList
+        // If we press Q we spawn a random asteroid
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            SpawnAsteroid(new Vector3(20, 20, 0));
+            SpawnRandomAsteroid();
         }
+    }
+
+    public void SpawnRandomAsteroid()
+    {
+        Vector2 topRightCorner = new Vector2(1, 1);
+        Vector2 topEdgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
+
+        SpawnAsteroid(new Vector3(Random.Range(-topEdgeVector.x, topEdgeVector.x), Random.Range(-topEdgeVector.y, topEdgeVector.y)));
     }
 
     public void SpawnAsteroid(Vector3 position)
