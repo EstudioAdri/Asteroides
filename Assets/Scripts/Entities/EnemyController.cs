@@ -2,19 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyController : MonoBehaviour
 {
     [Header("Enemy base stats")]
     [SerializeField] uint health;
     [SerializeField] uint size;
     [SerializeField] float speed;
-
+    
     [Header("Enemy Count")]
     [SerializeField] uint enemyCount;
+
+    private void Awake()
+    {
+        LoadSpriteAndCollision();
+    }    
 
     private void Start()
     {
         EnemyManager.Register(gameObject.GetInstanceID(), this);
+    }
+
+    private void LoadSpriteAndCollision()
+    {
+        Sprite[] spriteArray = Resources.LoadAll<Sprite>("Sprites/Asteroids/");
+        int spriteSelected = Random.Range(0, spriteArray.Length);
+
+        GetComponent<SpriteRenderer>().sprite = spriteArray[spriteSelected];
+
+        gameObject.AddComponent<PolygonCollider2D>();
+        GetComponent<PolygonCollider2D>().isTrigger = true;
     }
 
     void OnTriggerEnter(Collider other)
