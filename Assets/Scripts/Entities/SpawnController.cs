@@ -30,7 +30,28 @@ public class SpawnController : MonoBehaviour
         Vector2 topRightCorner = new Vector2(1, 1);
         Vector2 topEdgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
 
-        SpawnAsteroid(new Vector3(Random.Range(-topEdgeVector.x, topEdgeVector.x), Random.Range(-topEdgeVector.y, topEdgeVector.y)));
+        int place = Mathf.RoundToInt(Random.Range(0, 4));
+        Vector3 newCoordinates;
+
+        switch(place)
+        {
+            case 1:
+                newCoordinates = new Vector3(Random.Range(-topEdgeVector.x, topEdgeVector.x), topEdgeVector.y);
+                break;
+            case 2:
+                newCoordinates = new Vector3(topEdgeVector.x, Random.Range(-topEdgeVector.y, topEdgeVector.y));
+                break;
+            case 3:
+                newCoordinates = new Vector3(Random.Range(-topEdgeVector.x, topEdgeVector.x), -topEdgeVector.y);
+                break;
+            case 4:
+                newCoordinates = new Vector3(-topEdgeVector.x, Random.Range(-topEdgeVector.y, topEdgeVector.y));
+                break;
+            default:
+                return;
+        }
+
+        SpawnAsteroid(newCoordinates);
     }
 
     public void SpawnAsteroid(Vector3 position)
