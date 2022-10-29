@@ -21,13 +21,8 @@ public class SpawnController : MonoBehaviour
         // Check number of asteroids in asteroidList
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            AddEnemy();
+            SpawnAsteroid(new Vector3(20, 20, 0));
         }
-    }
-
-    public void AddEnemy()
-    {
-        Instantiate(enemyGameObject);
     }
 
     public void SpawnAsteroid(Vector3 position)
