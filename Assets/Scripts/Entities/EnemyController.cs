@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     [Header("Enemy base stats")]
     [SerializeField] uint health;
     [SerializeField] uint size;
-    [SerializeField] float speed;
+    [SerializeField] float speedMin, speedMax;
     
     [Header("Enemy Count")]
     [SerializeField] uint enemyCount;
@@ -20,9 +20,12 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        EnemyManager.Register(gameObject.GetInstanceID(), this);
+        float speed = Random.Range(speedMin, speedMax);
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        float rotationZ = Random.Range(0f, 361f);
+        rb.rotation += rotationZ;
+        rb.AddRelativeForce(Vector2.up * speed,0f);
     }
-
     private void LoadSpriteAndCollision()
     {
         Sprite[] spriteArray = Resources.LoadAll<Sprite>("Sprites/Asteroids/");
