@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8530299305668615893}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,12 +60,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d27e3b71edc46e585abe49f6de3574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnImmunityTimer: 1
   laserSpawnPoint: {fileID: 5722360675506623686}
-  MultiplierForward: 1000
-  MultiplierRotation: 6
   ProyectilePrefab: {fileID: 8504709810430526259, guid: fe2ce5547b2fb704fa56c5854a40245c, type: 3}
   ProyectileSpeedMomentum: 100
   ProyectileSpeedDirection: 500
+  MultiplierForward: 1000
+  MultiplierRotation: 6
 --- !u!50 &7113517369112545182
 Rigidbody2D:
   serializedVersion: 4
@@ -149,7 +150,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

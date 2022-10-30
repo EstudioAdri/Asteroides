@@ -6,16 +6,20 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D PlayerRigidBody2d;
-    [SerializeField] Transform laserSpawnPoint;
+    [Header("Stats")]
+    [SerializeField] float respawnImmunityTimer;
+    bool respawnImmunity;
 
-    [Header("Speeds")]
-    [SerializeField] float MultiplierForward = 200.0f;
-    [SerializeField] float MultiplierRotation = 1.8f;
+    [Header("Laser")]
+    [SerializeField] Transform laserSpawnPoint;
     [SerializeField] GameObject ProyectilePrefab;
     [SerializeField] float ProyectileSpeedMomentum = 100;
     [SerializeField] float ProyectileSpeedDirection = 500;
 
-    // Start is called before the first frame update
+    [Header("Speeds")]
+    [SerializeField] float MultiplierForward = 200.0f;
+    [SerializeField] float MultiplierRotation = 1.8f;
+
     void Start()
     {
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
@@ -23,7 +27,6 @@ public class PlayerController : MonoBehaviour
         PlayerRigidBody2d.drag = 3.0f;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.W))
@@ -95,6 +98,29 @@ public class PlayerController : MonoBehaviour
             PlayerDirection *= ProyectileSpeedDirection;
             Vector2 PlayerMomentum = PlayerRigidBody2d.velocity * ProyectileSpeedMomentum;
             ProyectileRigidBody2D.AddForce(PlayerDirection + PlayerMomentum);
+        }
+    }
+
+    void PlayerDeath()
+    {
+        print("Player was hit, respawning");
+        // Take away 1 life
+        StartCoroutine(ImmunityTimer());
+        transform.position = Vector3.zero;
+    }
+
+    IEnumerator ImmunityTimer()
+    {
+        respawnImmunity = true;
+        yield return new WaitForSeconds(1);
+        respawnImmunity = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy" && !respawnImmunity)
+        {
+            PlayerDeath();
         }
     }
 }
