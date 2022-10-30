@@ -27,10 +27,34 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnRandomAsteroid()
     {
+        /*  
+         *  topRightCorner represents the corner (1, 1) of the screen such as:
+         *  
+         *                 (0, 1)  
+         *   (-1, 1)____________________ (1, 1)
+         *          |                  .
+         *          |          (0, 0)  .
+         *          |        Cam       .
+         *          |                  .
+         *  (-1, -1)|  .   .   .   .   . (-1, 1)
+         *                 (0, -1)
+         *  
+         *  And with Camera.main.ViewportToWorldPoint we transform that relative point
+         *  into actual coordinates of the screen and take the x's and y's we want for
+         *  painting stuff on the screen
+         *  
+         */
+
         Vector2 topRightCorner = new Vector2(1, 1);
         Vector2 topEdgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
 
-        int place = Mathf.RoundToInt(Random.Range(0, 4));
+        /*  
+         *  Picks a random number between from 1, 2, 3 ,4 and depending on this number
+         *  we paint the asteroid on one of the edges on the screen, with a random x or y
+         *  and a fixed one so it sticks to the edge of the screen.
+         */
+
+        int place = Mathf.RoundToInt(Random.Range(1, 4));
         Vector3 newCoordinates;
 
         switch(place)
