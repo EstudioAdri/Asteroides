@@ -47,17 +47,15 @@ public class EnemyController : MonoBehaviour
         health -= ammount;
         if (health == 0)
         {
+            var spawnController = FindObjectOfType<SpawnController>();
+            spawnController.SpawnAsteroid(transform.position);
+            spawnController.SpawnAsteroid(transform.position);
             Destroy(this.gameObject);
         }
     }
     void OnDestroy()
     {
-        if (health == 0)
-        {
-            var spawnController = FindObjectOfType<SpawnController>();
-            spawnController.SpawnAsteroid(transform.position);
-            spawnController.SpawnAsteroid(transform.position);
-        }
+
         EnemyManager.Remove(gameObject.GetInstanceID());
     }
 }
