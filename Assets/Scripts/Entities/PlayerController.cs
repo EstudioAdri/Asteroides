@@ -6,7 +6,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D PlayerRigidBody2d;
+    private GameManager gameManager;
+    public int Lives { get { return lives; } }
     [Header("Stats")]
+    [SerializeField] int lives;
     [SerializeField] float respawnImmunityTimer;
     bool respawnImmunity;
 
@@ -22,12 +25,23 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
         Physics2D.gravity = Vector2.zero;
         PlayerRigidBody2d.drag = 3.0f;
     }
 
     void FixedUpdate()
+    {
+        
+
+
+    }
+   
+
+   
+
+    private void Update()
     {
         if (Input.GetKey(KeyCode.W))
         {
@@ -43,11 +57,6 @@ public class PlayerController : MonoBehaviour
             PlayerRigidBody2d.rotation += -MultiplierRotation;
         }
 
-
-    }
-
-    private void Update()
-    {
         if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) // me rompe los huevos usar la J ;) - Porcel
         {
             float direction = this.gameObject.transform.localEulerAngles.z;
@@ -107,6 +116,16 @@ public class PlayerController : MonoBehaviour
         // Take away 1 life
         StartCoroutine(ImmunityTimer());
         transform.position = Vector3.zero;
+        lives--;
+        if (lives == 0)
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {        
+        gameManager.GameOver();
     }
 
     IEnumerator ImmunityTimer()
@@ -118,9 +137,44 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" && !respawnImmunity)
+        GameObject collidedWith = collision.gameObject;
+        Vector2 teleport;
+        switch (collidedWith.tag)
         {
-            PlayerDeath();
+            case "Enemy":
+                if (!respawnImmunity)
+                {
+                    PlayerDeath();
+                }
+                    break;
+            case "Wall X":
+                teleport = this.transform.position;
+                teleport.x *= -1;
+                if (teleport.x < 0)
+                {
+                    teleport.x += 0.15f;
+                }
+                else
+                {
+                    teleport.x -= 0.15f;
+                }               
+                this.transform.position = teleport;
+                break;
+            case "Wall Y":
+                teleport = this.transform.position;
+                teleport.y *= -1;
+                if (teleport.y < 0)
+                {
+                    teleport.y += 0.15f;
+                }
+                else
+                {
+                    teleport.y -= 0.15f;
+                }
+                this.transform.position = teleport;
+                break;
         }
+        
+        
     }
 }
