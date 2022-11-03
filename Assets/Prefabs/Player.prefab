@@ -60,13 +60,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d27e3b71edc46e585abe49f6de3574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lives: 0
   respawnImmunityTimer: 1
   laserSpawnPoint: {fileID: 5722360675506623686}
   ProyectilePrefab: {fileID: 8504709810430526259, guid: fe2ce5547b2fb704fa56c5854a40245c, type: 3}
   ProyectileSpeedMomentum: 100
   ProyectileSpeedDirection: 500
-  MultiplierForward: 1000
-  MultiplierRotation: 6
+  MultiplierForward: 250
+  MultiplierRotation: 2
 --- !u!50 &7113517369112545182
 Rigidbody2D:
   serializedVersion: 4
