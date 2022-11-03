@@ -66,8 +66,8 @@ MonoBehaviour:
   ProyectilePrefab: {fileID: 8504709810430526259, guid: fe2ce5547b2fb704fa56c5854a40245c, type: 3}
   ProyectileSpeedMomentum: 100
   ProyectileSpeedDirection: 500
-  MultiplierForward: 250
-  MultiplierRotation: 2
+  MultiplierForward: 20
+  MultiplierRotation: 8
 --- !u!50 &7113517369112545182
 Rigidbody2D:
   serializedVersion: 4
@@ -83,7 +83,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

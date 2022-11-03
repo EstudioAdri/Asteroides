@@ -27,25 +27,14 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
-        Physics2D.gravity = Vector2.zero;
         PlayerRigidBody2d.drag = 3.0f;
     }
 
-    void FixedUpdate()
-    {
-        
-
-
-    }
-   
-
-   
-
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            PlayerRigidBody2d.AddRelativeForce(Vector2.up * this.MultiplierForward * Time.fixedDeltaTime);
+            PlayerRigidBody2d.AddRelativeForce(Vector2.up * this.MultiplierForward);
         }
 
         if (Input.GetKey(KeyCode.A))
@@ -56,7 +45,10 @@ public class PlayerController : MonoBehaviour
         {
             PlayerRigidBody2d.rotation += -MultiplierRotation;
         }
+    }
 
+    private void Update()
+    {
         if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) // me rompe los huevos usar la J ;) - Porcel
         {
             float direction = this.gameObject.transform.localEulerAngles.z;
