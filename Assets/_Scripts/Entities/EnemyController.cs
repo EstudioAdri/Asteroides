@@ -7,24 +7,27 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Enemy base stats")]
     [SerializeField] uint health;
-    [SerializeField] uint size;
+    [SerializeField] uint ammountOfFragments;
+    [SerializeField] Vector3 baseScale;
     [SerializeField] float speedMin, speedMax;
-    
+    public AsteroidStage stage { get; set; }
+
     [Header("Enemy Count")]
     [SerializeField] uint enemyCount;
 
     private void Awake()
     {
         LoadSpriteAndCollision();
-    }    
+    }
 
     private void Start()
     {
+        SetScale();
         float speed = Random.Range(speedMin, speedMax);
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         float rotationZ = Random.Range(0f, 361f);
         rb.rotation += rotationZ;
-        rb.AddRelativeForce(Vector2.up * speed,0f);
+        rb.AddRelativeForce(Vector2.up * speed, 0f);
     }
     private void LoadSpriteAndCollision()
     {
@@ -37,23 +40,55 @@ public class EnemyController : MonoBehaviour
         GetComponent<PolygonCollider2D>().isTrigger = true;
     }
 
-    void OnTriggerEnter(Collider other)
+    public void SetScale()
     {
-
+        switch (stage)
+        {
+            case AsteroidStage.Big:
+                transform.localScale = baseScale;
+                break;
+            case AsteroidStage.Medium:
+                transform.localScale = baseScale / 2;
+                break;
+            case AsteroidStage.Small:
+                transform.localScale = baseScale / 4;
+                break;
+            default:
+                Debug.Log("No stage was provided upon spawn of Asteroid");
+                break;
+        }
     }
 
     void OnDamage(uint ammount)
     {
         health -= ammount;
-        if (health == 0)
+        if (health != 0)
         {
-            FindObjectOfType<AudioManager>().Play("AsteroidExplosion");
-            var spawnController = FindObjectOfType<SpawnController>();
-            spawnController.SpawnAsteroid(transform.position);
-            spawnController.SpawnAsteroid(transform.position);
-            Destroy(this.gameObject);
+            FindObjectOfType<AudioManager>().Play("AsteroidSmallExplosion");
+            return;
         }
+
+        FindObjectOfType<AudioManager>().Play("AsteroidExplosion");
+        if (stage != AsteroidStage.Small)
+        {
+            var spawnController = FindObjectOfType<SpawnController>();
+            for (int i = 0; i < ammountOfFragments; i++)
+            {
+                if (stage == AsteroidStage.Big)
+                {
+                    spawnController.SpawnAsteroid(transform.position, AsteroidStage.Medium);
+                }
+                else
+                {
+                    spawnController.SpawnAsteroid(transform.position, AsteroidStage.Small);
+                }
+            }
+
+        }
+
+        Destroy(this.gameObject);
     }
+
     void OnDestroy()
     {
         EnemyManager.Remove(gameObject.GetInstanceID());

@@ -929,6 +929,12 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: AsteroidSmallExplosion
+    clip: {fileID: 8300000, guid: 2fdd3b3ef7a5aa6489ba890060e7110d, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1096138095
 GameObject:
   m_ObjectHideFlags: 0

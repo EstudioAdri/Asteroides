@@ -71,8 +71,10 @@ public class SpawnController : MonoBehaviour
         SpawnAsteroid(newCoordinates);
     }
 
-    public void SpawnAsteroid(Vector3 position)
+    public void SpawnAsteroid(Vector3 position, AsteroidStage stage = AsteroidStage.Big)
     {
-        Instantiate(enemyGameObject, gameObject.transform).transform.position = position;
+        EnemyController currentInstance = Instantiate(enemyGameObject, gameObject.transform);
+        currentInstance.stage = stage;
+        currentInstance.transform.position = position;
     }
 }
