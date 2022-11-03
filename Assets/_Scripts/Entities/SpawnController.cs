@@ -73,6 +73,6 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnAsteroid(Vector3 position)
     {
-        Instantiate(enemyGameObject).transform.position = position;
+        Instantiate(enemyGameObject, gameObject.transform).transform.position = position;
     }
 }
