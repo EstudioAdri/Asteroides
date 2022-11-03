@@ -108,6 +108,16 @@ public class PlayerController : MonoBehaviour
             Vector2 PlayerMomentum = PlayerRigidBody2d.velocity * ProyectileSpeedMomentum;
             ProyectileRigidBody2D.AddForce(PlayerDirection + PlayerMomentum);
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            float buffer = 50;
+            Vector3 worldMin = Camera.main.ScreenToWorldPoint(new Vector2(buffer, buffer));
+            Vector2 worldMax = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width - buffer, Screen.height -buffer));
+            Vector2 spawnPosition = new Vector2(Random.Range(worldMin.x, worldMax.x), Random.Range(worldMin.y, worldMax.y));
+            this.transform.position = spawnPosition;
+        }
+
     }
 
     void PlayerDeath()
