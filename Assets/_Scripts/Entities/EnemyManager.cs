@@ -44,4 +44,6 @@ public class EnemyManager : MonoBehaviour
     {
         enemyCount = inst.Enemies.Count;
     }
+
+    
 }
