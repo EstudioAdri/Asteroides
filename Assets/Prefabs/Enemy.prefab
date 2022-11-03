@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 115924997203592161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,7 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  size: 1
+  ammountOfFragments: 2
+  stage: 1
+  baseScale: {x: 0.25, y: 0.25, z: 0.25}
   speedMin: 25
   speedMax: 175
   enemyCount: 0
