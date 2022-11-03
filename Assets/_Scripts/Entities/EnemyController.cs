@@ -47,6 +47,7 @@ public class EnemyController : MonoBehaviour
         health -= ammount;
         if (health == 0)
         {
+            FindObjectOfType<AudioManager>().Play("AsteroidExplosion");
             var spawnController = FindObjectOfType<SpawnController>();
             spawnController.SpawnAsteroid(transform.position);
             spawnController.SpawnAsteroid(transform.position);
@@ -64,6 +65,9 @@ public class EnemyController : MonoBehaviour
         Vector2 teleport;
         switch (collidedWith.tag)
         {
+            case "Laser":
+                OnDamage(1); // Damage must be read from the player
+                break;
             case "Wall X":
                 teleport = this.transform.position;
                 teleport.x *= -1;

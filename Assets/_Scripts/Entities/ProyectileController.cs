@@ -9,9 +9,10 @@ public class ProyectileController : MonoBehaviour
     Vector2 vector;
     [SerializeField] float LifeSpan = 1;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
+        FindObjectOfType<AudioManager>().Play("LaserShot");
         rb = GetComponent<Rigidbody2D>();
         Invoke("DestroyThis", LifeSpan);
     }
@@ -26,13 +27,15 @@ public class ProyectileController : MonoBehaviour
         
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject collidedWith = collision.gameObject;
         Vector2 teleport;
         switch (collidedWith.tag)
         {
+            case "Enemy":
+                DestroyThis();
+                break;
             case "Wall X":
                 teleport = this.transform.position;
                 teleport.x *= -1;
