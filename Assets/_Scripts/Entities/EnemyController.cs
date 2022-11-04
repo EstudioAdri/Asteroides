@@ -93,6 +93,7 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
+        gameManager.CheckNumberOfEnemies();
         EnemyManager.Remove(gameObject.GetInstanceID());
     }
 
@@ -156,4 +157,6 @@ public class EnemyController : MonoBehaviour
                 break;
         }
     }
+
+    
 }

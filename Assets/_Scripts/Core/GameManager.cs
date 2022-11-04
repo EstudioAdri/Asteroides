@@ -1,22 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     AsteroidSpawner asteroidSpawner;
     PlayerController player;
-    public int NumberOfAsteroids { get { return numberOfAsteroids; } } //Es público porque probablemente otros métodos tengan que acceder a este parámetro inicial para setear sus propios parametros iniciales
-    [SerializeField]private int numberOfAsteroids;
+    int enemies;   
+    public int InitialAsteroids { get { return initialAsteroids; } } //Es público porque probablemente otros métodos tengan que acceder a este parámetro inicial para setear sus propios parametros iniciales
+    [SerializeField]private int initialAsteroids;
     public int Score { get { return score;} }
     private int score;
     private void Start()
-    {
+    {        
         asteroidSpawner = FindObjectOfType<AsteroidSpawner>();
-        Application.targetFrameRate = 60;
-        AsteroidsSpawn(numberOfAsteroids);
-        score = 0;
+        NewRound(InitialAsteroids);
+        Application.targetFrameRate = 60;        
+        score = 0;        
         Test();
+        print(enemies);
+    }
+
+    private void Update()
+    {
+        if (enemies == 0)
+        {
+            initialAsteroids++;
+            NewRound(InitialAsteroids);
+        }
     }
 
     public void AddScore(int scoreToAdd)
@@ -24,9 +36,20 @@ public class GameManager : MonoBehaviour
         score += scoreToAdd;
     }
 
-    private void Test()
+    public void NewRound(int asteroids)
     {
-        print(score);
+        enemies = asteroids;
+        AsteroidsSpawn(asteroids);
+    }
+
+    public void CheckNumberOfEnemies()
+    {
+        enemies = FindObjectsOfType<EnemyController>().Length;
+    }
+
+    private void Test()
+    {        
+        print(enemies);
         Invoke("Test", 0.5f);
     }
 
@@ -38,6 +61,8 @@ public class GameManager : MonoBehaviour
             //TODO Game Over
         }
     }
+
+
 
     private void AsteroidsSpawn(int numberOfAsteroids)
     {
