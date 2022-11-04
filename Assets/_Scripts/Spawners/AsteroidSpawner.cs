@@ -2,19 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnController : MonoBehaviour
+public class AsteroidSpawner : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] EnemyController enemyGameObject;
-    [SerializeField] PlayerController playerGameObject;
-
-    private void Start()
-    {
-        // Initializes the player object
-        Instantiate(playerGameObject);
-
-        // use initialSpawnOfAsteroids
-    }
 
     private void Update()
     {

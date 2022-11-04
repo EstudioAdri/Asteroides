@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
-        PlayerRigidBody2d.drag = 3.0f;
+        
     }
 
     private void FixedUpdate()

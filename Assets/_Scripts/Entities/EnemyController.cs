@@ -71,7 +71,7 @@ public class EnemyController : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("AsteroidExplosion");
         if (stage != AsteroidStage.Small)
         {
-            var spawnController = FindObjectOfType<SpawnController>();
+            var spawnController = FindObjectOfType<AsteroidSpawner>();
             for (int i = 0; i < ammountOfFragments; i++)
             {
                 if (stage == AsteroidStage.Big)

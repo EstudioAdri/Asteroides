@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     PlayerController player;
-    private void start()
+    private void Start()
     {
         Application.targetFrameRate = 60;
     }
