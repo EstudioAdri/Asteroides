@@ -25,9 +25,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        transform.position = Vector3.zero;
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
-        
+        StartCoroutine(ImmunityTimer());
     }
 
     private void FixedUpdate()
@@ -109,25 +110,17 @@ public class PlayerController : MonoBehaviour
             Vector2 spawnPosition = new Vector2(Random.Range(worldMin.x, worldMax.x), Random.Range(worldMin.y, worldMax.y));
             this.transform.position = spawnPosition;
         }
-
     }
 
     void PlayerDeath()
     {
-        print("Player was hit, respawning");
-        // Take away 1 life
-        StartCoroutine(ImmunityTimer());
-        transform.position = Vector3.zero;
-        lives--;
-        if (lives == 0)
+        gameManager.playerLifes--;
+        if (gameManager.playerLifes == 0)
         {
-            GameOver();
+            print("Player death");
+            gameManager.GameOver();
         }
-    }
-
-    void GameOver()
-    {        
-        gameManager.GameOver();
+        Destroy(gameObject);
     }
 
     IEnumerator ImmunityTimer()
@@ -150,7 +143,7 @@ public class PlayerController : MonoBehaviour
                 }
                     break;
             case "Wall X":
-                teleport = this.transform.position;
+                teleport = transform.position;
                 teleport.x *= -1;
                 if (teleport.x < 0)
                 {
@@ -160,10 +153,10 @@ public class PlayerController : MonoBehaviour
                 {
                     teleport.x -= 0.15f;
                 }               
-                this.transform.position = teleport;
+                transform.position = teleport;
                 break;
             case "Wall Y":
-                teleport = this.transform.position;
+                teleport = transform.position;
                 teleport.y *= -1;
                 if (teleport.y < 0)
                 {
@@ -173,7 +166,7 @@ public class PlayerController : MonoBehaviour
                 {
                     teleport.y -= 0.15f;
                 }
-                this.transform.position = teleport;
+                transform.position = teleport;
                 break;
         }
         

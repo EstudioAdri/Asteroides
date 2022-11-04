@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public uint playerLifes { get; set; } = 3;
+
     PlayerController player;
     private void Start()
     {
@@ -13,10 +15,6 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         player = FindObjectOfType<PlayerController>();
-        if (player.Lives == 0)
-        {
-            //TODO Game Over
-        }
+        //TODO Game Over
     }
-
 }
