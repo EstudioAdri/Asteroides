@@ -754,7 +754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e985759263272c34ba522c08fbbb8367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfAsteroids: 0
+  numberOfAsteroids: 2
 --- !u!1 &543566815
 GameObject:
   m_ObjectHideFlags: 0
