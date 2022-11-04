@@ -25,7 +25,7 @@ public class AsteroidSpawner : MonoBehaviour
          *   (-1, 1)____________________ (1, 1)
          *          |                  .
          *          a|          (0, 0)  .
-         *          |        Cam       .
+         *          |        Cum       .
          *          |                  .
          *  (-1, -1)|  .   .   .   .   . (-1, 1)
          *                 (0, -1)

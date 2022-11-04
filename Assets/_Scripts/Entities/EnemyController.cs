@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] uint ammountOfFragments;
     [SerializeField] Vector3 baseScale;
     [SerializeField] float speedMin, speedMax;
+    private GameManager gameManager;
     public AsteroidStage stage { get; set; }
 
     [Header("Enemy Count")]
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         SetScale();
         float speed = Random.Range(speedMin, speedMax);
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -91,7 +93,26 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
+        gameManager.CheckNumberOfEnemies();
         EnemyManager.Remove(gameObject.GetInstanceID());
+    }
+
+    private void PlusScore()
+    {
+        int scoreToAdd = 0;
+        switch (stage)
+        {
+            case AsteroidStage.Big:
+                scoreToAdd = 20;
+                break;
+            case AsteroidStage.Medium:
+                scoreToAdd = 50;
+                break;
+            case AsteroidStage.Small:
+                scoreToAdd = 100;
+                break;
+        }
+        gameManager.AddScore(scoreToAdd);        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,7 +122,12 @@ public class EnemyController : MonoBehaviour
         switch (collidedWith.tag)
         {
             case "Laser":
+                PlusScore();
                 OnDamage(1); // Damage must be read from the player
+                break;
+            case "Player":
+                PlusScore();
+                OnDamage(1);
                 break;
             case "Wall X":
                 teleport = this.transform.position;
@@ -131,4 +157,6 @@ public class EnemyController : MonoBehaviour
                 break;
         }
     }
+
+    
 }
