@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public uint playerLifes { get; set; } = 3;
+
     AsteroidSpawner asteroidSpawner;
+
     PlayerController player;
     int enemies;   
     public int InitialAsteroids { get { return initialAsteroids; } } //Es público porque probablemente otros métodos tengan que acceder a este parámetro inicial para setear sus propios parametros iniciales
@@ -56,13 +59,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         player = FindObjectOfType<PlayerController>();
-        if (player.Lives == 0)
-        {
-            //TODO Game Over
-        }
+        //TODO Game Over
     }
-
-
 
     private void AsteroidsSpawn(int numberOfAsteroids)
     {
@@ -71,5 +69,4 @@ public class GameManager : MonoBehaviour
             asteroidSpawner.SpawnRandomAsteroid();
         }
     }
-
 }
