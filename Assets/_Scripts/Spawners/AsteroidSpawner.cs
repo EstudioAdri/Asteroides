@@ -7,10 +7,21 @@ public class AsteroidSpawner : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] EnemyController enemyGameObject;
 
+    [SerializeField] int initialAsteroids;
+
     private void Update()
     {
-        // If we press Q we spawn a random asteroid
+        // DEBUG If we press Q we spawn a random asteroid
         if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SpawnRandomAsteroid();
+        }
+    }
+
+    public void NewRoundAsteroidSpawn()
+    {
+        int numberOfAsteroids = initialAsteroids; // TO DO  + round number (from GameManager)
+        for (int i = 0; i < numberOfAsteroids; i++)
         {
             SpawnRandomAsteroid();
         }

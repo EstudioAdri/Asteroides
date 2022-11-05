@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,68 +6,55 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public uint playerLifes { get; set; } = 3;
-
+    public int Score { get { return score;} }
+    public uint PlayerLifes { get; set; } = 3;
+    
+    EnemyManager asteroidList;
     AsteroidSpawner asteroidSpawner;
 
-    PlayerController player;
-    int enemies;   
-    public int InitialAsteroids { get { return initialAsteroids; } } //Es público porque probablemente otros métodos tengan que acceder a este parámetro inicial para setear sus propios parametros iniciales
-    [SerializeField]private int initialAsteroids;
-    public int Score { get { return score;} }
-    private int score;
+    bool gameIsOver;
+    int score;
+
     private void Start()
     {        
+        Application.targetFrameRate = 60;
+
+        asteroidList = FindObjectOfType<EnemyManager>();
         asteroidSpawner = FindObjectOfType<AsteroidSpawner>();
-        NewRound(InitialAsteroids);
-        Application.targetFrameRate = 60;        
-        score = 0;        
-        Test();
-        print(enemies);
+
+        score = 0;
     }
 
-    private void Update()
+    void Update() // TO DO has to be called only when an enemy dies
     {
-        if (enemies == 0)
+        if (!gameIsOver && asteroidList.enemyCount == 0)
         {
-            initialAsteroids++;
-            NewRound(InitialAsteroids);
+            asteroidSpawner.NewRoundAsteroidSpawn();
         }
     }
 
-    public void AddScore(int scoreToAdd)
+    public void PlusScore(AsteroidStage stage)
     {
+        int scoreToAdd = 0;
+        switch (stage)
+        {
+            case AsteroidStage.Big:
+                scoreToAdd = 20;
+                break;
+            case AsteroidStage.Medium:
+                scoreToAdd = 50;
+                break;
+            case AsteroidStage.Small:
+                scoreToAdd = 100;
+                break;
+        }
+
         score += scoreToAdd;
-    }
-
-    public void NewRound(int asteroids)
-    {
-        enemies = asteroids;
-        AsteroidsSpawn(asteroids);
-    }
-
-    public void CheckNumberOfEnemies()
-    {
-        enemies = FindObjectsOfType<EnemyController>().Length;
-    }
-
-    private void Test()
-    {        
-        print(enemies);
-        Invoke("Test", 0.5f);
     }
 
     public void GameOver()
     {
-        player = FindObjectOfType<PlayerController>();
         //TODO Game Over
-    }
-
-    private void AsteroidsSpawn(int numberOfAsteroids)
-    {
-        for (int i = 0; i < numberOfAsteroids; i++)
-        {
-            asteroidSpawner.SpawnRandomAsteroid();
-        }
+        gameIsOver = true;
     }
 }
