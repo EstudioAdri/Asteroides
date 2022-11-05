@@ -50,10 +50,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) // me rompe los huevos usar la J ;) - Porcel
+        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.J)) // J used for DEBUG, TO DO add a debug option to toggle this
         {
             float direction = this.gameObject.transform.localEulerAngles.z;
-            GameObject Proyectile = Instantiate<GameObject>(ProyectilePrefab);
+            GameObject Proyectile = Instantiate(ProyectilePrefab, gameManager.transform); // TO DO  set empty game object as parent to keep all shots, do not use gameManager, temporary
             Proyectile.transform.position = laserSpawnPoint.position;
             Proyectile.transform.rotation = this.transform.rotation;
             Rigidbody2D ProyectileRigidBody2D = Proyectile.GetComponent<Rigidbody2D>();
@@ -114,8 +114,8 @@ public class PlayerController : MonoBehaviour
 
     void PlayerDeath()
     {
-        gameManager.playerLifes--;
-        if (gameManager.playerLifes == 0)
+        gameManager.PlayerLifes--;
+        if (gameManager.PlayerLifes == 0)
         {
             print("Player death");
             gameManager.GameOver();

@@ -19,7 +19,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (respawnTimeLeft <= 0 && !spawnAreaBusy && playerInstance == null && gameManager.playerLifes > 0)
+        if (respawnTimeLeft <= 0 && !spawnAreaBusy && playerInstance == null && gameManager.PlayerLifes > 0)
         {
             playerInstance = Instantiate(playerGameObject);
             respawnTimeLeft = respawnTimer;
@@ -32,7 +32,7 @@ public class PlayerSpawner : MonoBehaviour
 
     public IEnumerator SpawnPlayer()
     {
-        while (gameManager.playerLifes > 0)
+        while (gameManager.PlayerLifes > 0)
         {
 
             yield return new WaitForSeconds(respawnTimer);

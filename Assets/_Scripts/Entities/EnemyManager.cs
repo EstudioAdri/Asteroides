@@ -6,9 +6,11 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
 
+    public Dictionary<int, EnemyController> Enemies { get; set; }
+
     public static EnemyManager inst;
+
     [SerializeField] public int enemyCount;
-    Dictionary<int, EnemyController> Enemies;
 
     private void Awake()
     {
@@ -27,6 +29,7 @@ public class EnemyManager : MonoBehaviour
         {
             throw new Exception("ENEMYMANAGER_REMOVE: ID not found");
         }
+        inst.enemyCount = inst.Enemies.Count;
     }
 
     public static void Register(int id, EnemyController enemy)
@@ -37,13 +40,6 @@ public class EnemyManager : MonoBehaviour
         }
 
         inst.Enemies.Add(id, enemy);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        enemyCount = inst.Enemies.Count;
-    }
-
-    
+        inst.enemyCount = inst.Enemies.Count;
+    }    
 }

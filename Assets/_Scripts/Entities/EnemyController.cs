@@ -5,29 +5,37 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public AsteroidStage stage { get; set; }
+
     [Header("Enemy base stats")]
     [SerializeField] uint health;
     [SerializeField] uint ammountOfFragments;
     [SerializeField] Vector3 baseScale;
     [SerializeField] float speedMin, speedMax;
-    private GameManager gameManager;
-    public AsteroidStage stage { get; set; }
-
+    
     [Header("Enemy Count")]
     [SerializeField] uint enemyCount;
 
+    GameManager gameManager;
+    AudioManager audioManager;
+
     private void Awake()
     {
-        LoadSpriteAndCollision();
+        EnemyManager.Register(gameObject.GetInstanceID(), this);
     }
 
     private void Start()
     {
+        LoadSpriteAndCollision();
+
         gameManager = FindObjectOfType<GameManager>();
+        audioManager = FindObjectOfType<AudioManager>();
+
         SetScale();
         float speed = Random.Range(speedMin, speedMax);
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         float rotationZ = Random.Range(0f, 361f);
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.rotation += rotationZ;
         rb.AddRelativeForce(Vector2.up * speed, 0f);
     }
@@ -66,11 +74,11 @@ public class EnemyController : MonoBehaviour
         health -= ammount;
         if (health != 0)
         {
-            FindObjectOfType<AudioManager>().Play("AsteroidSmallExplosion");
+            audioManager.Play("AsteroidSmallExplosion");
             return;
         }
 
-        FindObjectOfType<AudioManager>().Play("AsteroidExplosion");
+        audioManager.Play("AsteroidExplosion");
         if (stage != AsteroidStage.Small)
         {
             var spawnController = FindObjectOfType<AsteroidSpawner>();
@@ -93,26 +101,8 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
-        gameManager.CheckNumberOfEnemies();
+        gameManager.PlusScore(stage);
         EnemyManager.Remove(gameObject.GetInstanceID());
-    }
-
-    private void PlusScore()
-    {
-        int scoreToAdd = 0;
-        switch (stage)
-        {
-            case AsteroidStage.Big:
-                scoreToAdd = 20;
-                break;
-            case AsteroidStage.Medium:
-                scoreToAdd = 50;
-                break;
-            case AsteroidStage.Small:
-                scoreToAdd = 100;
-                break;
-        }
-        gameManager.AddScore(scoreToAdd);        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -122,12 +112,10 @@ public class EnemyController : MonoBehaviour
         switch (collidedWith.tag)
         {
             case "Laser":
-                PlusScore();
-                OnDamage(1); // Damage must be read from the player
+                OnDamage(1); // TO DO Damage must be read from the player
                 break;
             case "Player":
-                PlusScore();
-                OnDamage(1);
+                OnDamage(1); // TO DO Damage must be read from the player
                 break;
             case "Wall X":
                 teleport = this.transform.position;
