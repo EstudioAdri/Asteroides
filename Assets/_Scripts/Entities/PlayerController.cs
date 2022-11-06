@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D PlayerRigidBody2d;
     private GameManager gameManager;
+    private LifeCounter LifeCounter;
     public int Lives { get { return lives; } }
     public bool RespawnInmunity { get { return respawnImmunity; } }
     [Header("Stats")]
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.zero;
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
+        LifeCounter = FindObjectOfType<LifeCounter>();
         StartCoroutine(ImmunityTimer());        
     }
 
@@ -116,12 +118,14 @@ public class PlayerController : MonoBehaviour
     void PlayerDeath()
     {
         gameManager.PlayerLifes--;
+        LifeCounter.LoseLife();
         if (gameManager.PlayerLifes == 0)
         {
             print("Player death");
             gameManager.GameOver();
         }
         Destroy(gameObject);
+        
     }
 
     IEnumerator ImmunityTimer()
