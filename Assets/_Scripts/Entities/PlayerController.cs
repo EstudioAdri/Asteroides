@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D PlayerRigidBody2d;
     private GameManager gameManager;
     public int Lives { get { return lives; } }
+    public bool RespawnInmunity { get { return respawnImmunity; } }
     [Header("Stats")]
     [SerializeField] int lives;
     [SerializeField] float respawnImmunityTimer;
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.zero;
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
-        StartCoroutine(ImmunityTimer());
+        StartCoroutine(ImmunityTimer());        
     }
 
     private void FixedUpdate()

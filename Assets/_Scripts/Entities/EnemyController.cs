@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
 
     GameManager gameManager;
     AudioManager audioManager;
+    PlayerController player;
 
     private void Awake()
     {
@@ -26,11 +27,9 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
-        LoadSpriteAndCollision();
-
+        LoadSpriteAndCollision();        
         gameManager = FindObjectOfType<GameManager>();
         audioManager = FindObjectOfType<AudioManager>();
-
         SetScale();
         float speed = Random.Range(speedMin, speedMax);
         float rotationZ = Random.Range(0f, 361f);
@@ -115,7 +114,10 @@ public class EnemyController : MonoBehaviour
                 OnDamage(1); // TO DO Damage must be read from the player
                 break;
             case "Player":
-                OnDamage(1); // TO DO Damage must be read from the player
+                if(!FindObjectOfType<PlayerController>().RespawnInmunity)
+                {
+                    OnDamage(1); // TO DO Damage must be read from the player
+                }
                 break;
             case "Wall X":
                 teleport = this.transform.position;
