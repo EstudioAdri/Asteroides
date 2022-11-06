@@ -6,6 +6,7 @@ public class AsteroidSpawner : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] EnemyController enemyGameObject;
+    [SerializeField] GameManager gameManager;
 
     [SerializeField] int initialAsteroids;
 
@@ -20,7 +21,8 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void NewRoundAsteroidSpawn()
     {
-        int numberOfAsteroids = initialAsteroids; // TO DO  + round number (from GameManager)
+        int numberOfAsteroids = initialAsteroids + gameManager.RoundNumber;
+        print($"New round, spawning {numberOfAsteroids} asteroids");
         for (int i = 0; i < numberOfAsteroids; i++)
         {
             SpawnRandomAsteroid();
