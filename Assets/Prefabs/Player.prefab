@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lives: 0
-  respawnImmunityTimer: 1
+  respawnImmunityTimer: 10
   laserSpawnPoint: {fileID: 5722360675506623686}
   ProyectilePrefab: {fileID: 8504709810430526259, guid: fe2ce5547b2fb704fa56c5854a40245c, type: 3}
   ProyectileSpeedMomentum: 100
