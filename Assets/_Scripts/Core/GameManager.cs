@@ -7,11 +7,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int Score { get { return score;} }
+    public int RoundNumber { get { return roundNumber;} }
     public uint PlayerLifes { get; set; } = 3;
     
     EnemyManager asteroidList;
     AsteroidSpawner asteroidSpawner;
 
+    [SerializeField] int roundNumber;
     bool gameIsOver;
     int score;
 
@@ -22,13 +24,15 @@ public class GameManager : MonoBehaviour
         asteroidList = FindObjectOfType<EnemyManager>();
         asteroidSpawner = FindObjectOfType<AsteroidSpawner>();
 
-        score = 0;
+        score = 0; // TO DO Must be done at new game (Trello task: PlayAgain)
+        roundNumber = 0; // TO DO Must be done at new game (Trello task: PlayAgain)
     }
 
     void Update() // TO DO has to be called only when an enemy dies
     {
         if (!gameIsOver && asteroidList.enemyCount == 0)
         {
+            roundNumber++;
             asteroidSpawner.NewRoundAsteroidSpawn();
         }
     }
