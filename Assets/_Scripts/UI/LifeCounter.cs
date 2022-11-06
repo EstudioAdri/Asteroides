@@ -12,6 +12,7 @@ public class LifeCounter : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         PrintLifeCounter();
+        transform.localScale = new Vector3(0.3f, 0.3f, 0.0f);
     }
 
     // Update is called once per frame
@@ -20,19 +21,19 @@ public class LifeCounter : MonoBehaviour
         
     }
 
+    private void InstantiateIcon()
+    {
+        GameObject newObject = Instantiate(ShipIcon, transform);
+    }
+
     public void PrintLifeCounter()
     {
         for (int i = 0; i < gameManager.PlayerLifes; i++)
-            Instantiate(ShipIcon, transform);
+            InstantiateIcon();
     }
 
     public void LoseLife()
     {
         Object.Destroy(transform.GetChild(transform.childCount - 1).gameObject);
-    }
-
-    public void GetLife()
-    {
-        Instantiate(ShipIcon, transform);
     }
 }
