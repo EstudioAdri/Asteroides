@@ -4,26 +4,39 @@ using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
+    GameManager gameManager;
+    [SerializeField] float respawnTimer;
     [SerializeField] PlayerController playerGameObject;
     [SerializeField] bool spawnAreaBusy;
+    PlayerController playerInstance;
+    float respawnTimeLeft;
 
     private void Start()
     {
-        StartCoroutine(FindObjectOfType<PlayerSpawner>().SpawnPlayer());
+        gameManager = FindObjectOfType<GameManager>();
+        StartCoroutine(SpawnPlayer());
+    }
+
+    private void Update()
+    {
+        if (respawnTimeLeft <= 0 && !spawnAreaBusy && playerInstance == null && gameManager.PlayerLifes > 0)
+        {
+            playerInstance = Instantiate(playerGameObject);
+            respawnTimeLeft = respawnTimer;
+        }
+        else if (playerInstance == null)
+        {
+            respawnTimeLeft -= Time.deltaTime;
+        }
     }
 
     public IEnumerator SpawnPlayer()
     {
-        while (true)
+        while (gameManager.PlayerLifes > 0)
         {
-            if (!spawnAreaBusy)
-            {
-                Instantiate(playerGameObject).transform.position = Vector3.zero;
-                break;
-            }
-            yield return new WaitForEndOfFrame();
+
+            yield return new WaitForSeconds(respawnTimer);
         }
-        yield return null;
     }
 
     private void OnTriggerStay2D(Collider2D collision)

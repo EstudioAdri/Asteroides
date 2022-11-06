@@ -188,6 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyGameObject: {fileID: 115924997203592160, guid: d3bd55f13cd05f44bbc30ebd8d1dd740, type: 3}
+  gameManager: {fileID: 519420033}
+  initialAsteroids: 5
 --- !u!4 &75816945
 Transform:
   m_ObjectHideFlags: 0
@@ -201,7 +203,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &145131175
 GameObject:
@@ -668,6 +670,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -741,6 +744,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e985759263272c34ba522c08fbbb8367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roundNumber: 0
 --- !u!1 &543566815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,6 +1214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a6a0a02dde97744c97901e7e7a87cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnTimer: 2
   playerGameObject: {fileID: 7113517369112545183, guid: 2cc2f85c911d747448d93064bf76c2e5, type: 3}
   spawnAreaBusy: 0
 --- !u!1 &1581036423
@@ -1357,7 +1374,7 @@ Transform:
   - {fileID: 1451721769}
   - {fileID: 6328043}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2074548676
 GameObject:
@@ -1402,5 +1419,5 @@ Transform:
   m_Children:
   - {fileID: 408777761}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

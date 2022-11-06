@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D PlayerRigidBody2d;
     private GameManager gameManager;
     public int Lives { get { return lives; } }
+    public bool RespawnInmunity { get { return respawnImmunity; } }
     [Header("Stats")]
     [SerializeField] int lives;
     [SerializeField] float respawnImmunityTimer;
@@ -25,23 +26,24 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        transform.position = Vector3.zero;
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
-        
+        StartCoroutine(ImmunityTimer());        
     }
 
     private void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             PlayerRigidBody2d.AddRelativeForce(Vector2.up * this.MultiplierForward);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             PlayerRigidBody2d.rotation += MultiplierRotation;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             PlayerRigidBody2d.rotation += -MultiplierRotation;
         }
@@ -49,10 +51,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) // me rompe los huevos usar la J ;) - Porcel
+        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.J)) // J used for DEBUG, TO DO add a debug option to toggle this
         {
             float direction = this.gameObject.transform.localEulerAngles.z;
-            GameObject Proyectile = Instantiate<GameObject>(ProyectilePrefab);
+            GameObject Proyectile = Instantiate(ProyectilePrefab, gameManager.transform); // TO DO  set empty game object as parent to keep all shots, do not use gameManager, temporary
             Proyectile.transform.position = laserSpawnPoint.position;
             Proyectile.transform.rotation = this.transform.rotation;
             Rigidbody2D ProyectileRigidBody2D = Proyectile.GetComponent<Rigidbody2D>();
@@ -109,25 +111,17 @@ public class PlayerController : MonoBehaviour
             Vector2 spawnPosition = new Vector2(Random.Range(worldMin.x, worldMax.x), Random.Range(worldMin.y, worldMax.y));
             this.transform.position = spawnPosition;
         }
-
     }
 
     void PlayerDeath()
     {
-        print("Player was hit, respawning");
-        // Take away 1 life
-        StartCoroutine(ImmunityTimer());
-        transform.position = Vector3.zero;
-        lives--;
-        if (lives == 0)
+        gameManager.PlayerLifes--;
+        if (gameManager.PlayerLifes == 0)
         {
-            GameOver();
+            print("Player death");
+            gameManager.GameOver();
         }
-    }
-
-    void GameOver()
-    {        
-        gameManager.GameOver();
+        Destroy(gameObject);
     }
 
     IEnumerator ImmunityTimer()
@@ -150,7 +144,7 @@ public class PlayerController : MonoBehaviour
                 }
                     break;
             case "Wall X":
-                teleport = this.transform.position;
+                teleport = transform.position;
                 teleport.x *= -1;
                 if (teleport.x < 0)
                 {
@@ -160,10 +154,10 @@ public class PlayerController : MonoBehaviour
                 {
                     teleport.x -= 0.15f;
                 }               
-                this.transform.position = teleport;
+                transform.position = teleport;
                 break;
             case "Wall Y":
-                teleport = this.transform.position;
+                teleport = transform.position;
                 teleport.y *= -1;
                 if (teleport.y < 0)
                 {
@@ -173,7 +167,7 @@ public class PlayerController : MonoBehaviour
                 {
                     teleport.y -= 0.15f;
                 }
-                this.transform.position = teleport;
+                transform.position = teleport;
                 break;
         }
         

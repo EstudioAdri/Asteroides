@@ -6,11 +6,24 @@ public class AsteroidSpawner : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] EnemyController enemyGameObject;
+    [SerializeField] GameManager gameManager;
+
+    [SerializeField] int initialAsteroids;
 
     private void Update()
     {
-        // If we press Q we spawn a random asteroid
+        // DEBUG If we press Q we spawn a random asteroid
         if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SpawnRandomAsteroid();
+        }
+    }
+
+    public void NewRoundAsteroidSpawn()
+    {
+        int numberOfAsteroids = initialAsteroids + gameManager.RoundNumber;
+        print($"New round, spawning {numberOfAsteroids} asteroids");
+        for (int i = 0; i < numberOfAsteroids; i++)
         {
             SpawnRandomAsteroid();
         }
@@ -25,7 +38,7 @@ public class AsteroidSpawner : MonoBehaviour
          *   (-1, 1)____________________ (1, 1)
          *          |                  .
          *          a|          (0, 0)  .
-         *          |        Cam       .
+         *          |        Cum       .
          *          |                  .
          *  (-1, -1)|  .   .   .   .   . (-1, 1)
          *                 (0, -1)
