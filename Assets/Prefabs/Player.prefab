@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 7113517369112545181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.088, y: 0.08, z: 0.15}
+  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5722360675506623686}
@@ -60,8 +60,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d27e3b71edc46e585abe49f6de3574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 0
-  respawnImmunityTimer: 10
+  lives: 3
+  totalAvailableShots: 4
+  respawnImmunityTimer: 1
+  reloadTime: 1
   laserSpawnPoint: {fileID: 5722360675506623686}
   ProyectilePrefab: {fileID: 8504709810430526259, guid: fe2ce5547b2fb704fa56c5854a40245c, type: 3}
   ProyectileSpeedMomentum: 100

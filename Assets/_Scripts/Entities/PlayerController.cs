@@ -5,25 +5,32 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D PlayerRigidBody2d;
-    private GameManager gameManager;
-    private LifeCounter LifeCounter;
     public int Lives { get { return lives; } }
     public bool RespawnInmunity { get { return respawnImmunity; } }
+
     [Header("Stats")]
     [SerializeField] int lives;
+    [SerializeField] uint totalAvailableShots;
     [SerializeField] float respawnImmunityTimer;
-    bool respawnImmunity;
+    [SerializeField] float reloadTime;
 
     [Header("Laser")]
     [SerializeField] Transform laserSpawnPoint;
     [SerializeField] GameObject ProyectilePrefab;
-    [SerializeField] float ProyectileSpeedMomentum = 100;
-    [SerializeField] float ProyectileSpeedDirection = 500;
+    [SerializeField] float ProyectileSpeedMomentum;
+    [SerializeField] float ProyectileSpeedDirection;
 
     [Header("Speeds")]
-    [SerializeField] float MultiplierForward = 200.0f;
-    [SerializeField] float MultiplierRotation = 1.8f;
+    [SerializeField] float MultiplierForward;
+    [SerializeField] float MultiplierRotation;
+
+    Rigidbody2D PlayerRigidBody2d;
+    GameManager gameManager;
+    LifeCounter LifeCounter;
+
+    uint availableShots;
+    bool respawnImmunity;
+
 
     void Start()
     {
@@ -31,14 +38,16 @@ public class PlayerController : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         PlayerRigidBody2d = GetComponent<Rigidbody2D>();
         LifeCounter = FindObjectOfType<LifeCounter>();
-        StartCoroutine(ImmunityTimer());        
+
+        StartCoroutine(ImmunityTimer());
+        ReloadShots();
     }
 
     private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            PlayerRigidBody2d.AddRelativeForce(Vector2.up * this.MultiplierForward);
+            PlayerRigidBody2d.AddRelativeForce(Vector2.up * MultiplierForward);
         }
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
@@ -53,66 +62,96 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.J)) // J used for DEBUG, TO DO add a debug option to toggle this
+        if (Input.GetKey(KeyCode.J)) // J used for DEBUG, TO DO add a debug option to toggle this
         {
-            float direction = this.gameObject.transform.localEulerAngles.z;
-            GameObject Proyectile = Instantiate(ProyectilePrefab, gameManager.transform); // TO DO  set empty game object as parent to keep all shots, do not use gameManager, temporary
-            Proyectile.transform.position = laserSpawnPoint.position;
-            Proyectile.transform.rotation = this.transform.rotation;
-            Rigidbody2D ProyectileRigidBody2D = Proyectile.GetComponent<Rigidbody2D>();
+            Shoot();
+        }
 
-            Vector2 PlayerDirection;
-            float axis;
-            switch (direction)
+        if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Space)) 
+        {
+            if (availableShots > 0)
             {
-                case <= 45:
-                    PlayerDirection = new Vector2(-(direction / 45), 1);
-                    break;
-                case <= 90:
-                    axis = 90 - direction;
-                    PlayerDirection = new Vector2(-1, (axis / 45));
-                    break;
-                case <= 135:
-                    axis = 90 - direction;
-                    PlayerDirection = new Vector2(-1, (axis / 45));
-                    break;
-                case <= 180:
-                    axis = 180 - direction;
-                    PlayerDirection = new Vector2(-(axis / 45), -1);
-                    break;
-                case <= 225:
-                    axis = direction - 180;
-                    PlayerDirection = new Vector2((axis / 45), -1);
-                    break;
-                case <= 270:
-                    axis = 270 - direction;
-                    PlayerDirection = new Vector2(1, -(axis / 45));
-                    break;
-                case <= 315:
-                    axis = 270 - direction;
-                    PlayerDirection = new Vector2(1, -(axis / 45));
-                    break;
-                case <= 360:
-                    axis = 360 - direction;
-                    PlayerDirection = new Vector2((axis / 45), 1);
-                    break;
-                default:
-                    PlayerDirection = Vector2.zero;
-                    break;
+                if (availableShots == totalAvailableShots)
+                {
+                    StartCoroutine(ShotReplenishTimer());
+                }
+                availableShots --;
+                Shoot();
             }
-            PlayerDirection *= ProyectileSpeedDirection;
-            Vector2 PlayerMomentum = PlayerRigidBody2d.velocity * ProyectileSpeedMomentum;
-            ProyectileRigidBody2D.AddForce(PlayerDirection + PlayerMomentum);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             float buffer = 50;
             Vector3 worldMin = Camera.main.ScreenToWorldPoint(new Vector2(buffer, buffer));
-            Vector2 worldMax = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width - buffer, Screen.height -buffer));
+            Vector2 worldMax = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width - buffer, Screen.height - buffer));
             Vector2 spawnPosition = new Vector2(Random.Range(worldMin.x, worldMax.x), Random.Range(worldMin.y, worldMax.y));
             this.transform.position = spawnPosition;
         }
+    }
+
+    IEnumerator ShotReplenishTimer()
+    {
+        yield return new WaitForSeconds(reloadTime);
+        ReloadShots();
+    }
+
+    void Shoot()
+    {
+        float direction = transform.localEulerAngles.z;
+        GameObject Proyectile = Instantiate(ProyectilePrefab, gameManager.transform);
+        Proyectile.transform.position = laserSpawnPoint.position;
+        Proyectile.transform.rotation = transform.rotation;
+        Rigidbody2D ProyectileRigidBody2D = Proyectile.GetComponent<Rigidbody2D>();
+
+        Vector2 PlayerDirection;
+        float axis;
+        switch (direction)
+        {
+            case <= 45:
+                PlayerDirection = new Vector2(-(direction / 45), 1);
+                break;
+            case <= 90:
+                axis = 90 - direction;
+                PlayerDirection = new Vector2(-1, (axis / 45));
+                break;
+            case <= 135:
+                axis = 90 - direction;
+                PlayerDirection = new Vector2(-1, (axis / 45));
+                break;
+            case <= 180:
+                axis = 180 - direction;
+                PlayerDirection = new Vector2(-(axis / 45), -1);
+                break;
+            case <= 225:
+                axis = direction - 180;
+                PlayerDirection = new Vector2((axis / 45), -1);
+                break;
+            case <= 270:
+                axis = 270 - direction;
+                PlayerDirection = new Vector2(1, -(axis / 45));
+                break;
+            case <= 315:
+                axis = 270 - direction;
+                PlayerDirection = new Vector2(1, -(axis / 45));
+                break;
+            case <= 360:
+                axis = 360 - direction;
+                PlayerDirection = new Vector2((axis / 45), 1);
+                break;
+            default:
+                PlayerDirection = Vector2.zero;
+                break;
+        }
+
+        PlayerDirection *= ProyectileSpeedDirection;
+        Vector2 PlayerMomentum = PlayerRigidBody2d.velocity * ProyectileSpeedMomentum;
+        ProyectileRigidBody2D.AddForce(PlayerDirection + PlayerMomentum);
+    }
+    
+    void ReloadShots()
+    {
+        availableShots = totalAvailableShots;
     }
 
     void PlayerDeath()
@@ -125,13 +164,13 @@ public class PlayerController : MonoBehaviour
             gameManager.GameOver();
         }
         Destroy(gameObject);
-        
+
     }
 
     IEnumerator ImmunityTimer()
     {
         respawnImmunity = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(respawnImmunityTimer);
         respawnImmunity = false;
     }
 
@@ -146,7 +185,7 @@ public class PlayerController : MonoBehaviour
                 {
                     PlayerDeath();
                 }
-                    break;
+                break;
             case "Wall X":
                 teleport = transform.position;
                 teleport.x *= -1;
@@ -157,7 +196,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     teleport.x -= 0.15f;
-                }               
+                }
                 transform.position = teleport;
                 break;
             case "Wall Y":
@@ -174,7 +213,7 @@ public class PlayerController : MonoBehaviour
                 transform.position = teleport;
                 break;
         }
-        
-        
+
+
     }
 }

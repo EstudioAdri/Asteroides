@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 630681121}
   - component: {fileID: 630681122}
   m_Layer: 5
-  m_Name: Counters
+  m_Name: TopLeftCounters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
