@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,10 +11,12 @@ public class GameManager : MonoBehaviour
     public int RoundNumber { get { return roundNumber;} }
     public uint PlayerLifes { get; set; } = 3;
     
+    [SerializeField] int roundNumber;
+    [SerializeField] GameObject gameOverCanvasObject;
+
     EnemyManager asteroidList;
     AsteroidSpawner asteroidSpawner;
 
-    [SerializeField] int roundNumber;
     bool gameIsOver;
     int score;
 
@@ -24,8 +27,8 @@ public class GameManager : MonoBehaviour
         asteroidList = FindObjectOfType<EnemyManager>();
         asteroidSpawner = FindObjectOfType<AsteroidSpawner>();
 
-        score = 0; // TO DO Must be done at new game (Trello task: PlayAgain)
-        roundNumber = 0; // TO DO Must be done at new game (Trello task: PlayAgain)
+        score = 0;
+        roundNumber = 0;
     }
 
     void Update() // TO DO has to be called only when an enemy dies
@@ -58,7 +61,12 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        //TODO Game Over
         gameIsOver = true;
+        gameOverCanvasObject.SetActive(true);
+    }
+
+    public void LoadGameScene()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }
